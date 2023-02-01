@@ -12,6 +12,7 @@ app.use(bodyParser.json());
 // app routes
 require("./routes/webhook_verify")(app);
 
+app.get("/test", (req, res) => res.json("Test page"));
 // warming up the engines !! setta !! go !!!.
 app.listen(app.get("port"), function () {
   const url = "http://localhost:" + app.set("port");
