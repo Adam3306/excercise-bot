@@ -1,21 +1,20 @@
-const request = require("request");
-module.exports = function sendGenericTemplate(recipientId) {
-  console.log("recipientId is \t", recipientId);
-
-  request(
+module.exports = function sendGenericTemplate(userId, text = "hello world") {
+  return fetch(
+    `https://graph.facebook.com/v2.6/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`,
     {
-      url: "https://graph.facebook.com/v2.6/me/messages",
-      qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-      method: "POST",
-      json: {
-        recipient: { id: recipientId },
-        message: "hello world",
+      headers: {
+        "Content-Type": "application/json",
       },
-    },
-    function (error, response, body) {
-      if (error) {
-        console.log("Error sending message: " + response.error);
-      }
+      method: "POST",
+      body: JSON.stringify({
+        messaging_type: "RESPONSE",
+        recipient: {
+          id: userId,
+        },
+        message: {
+          text,
+        },
+      }),
     }
   );
 };
